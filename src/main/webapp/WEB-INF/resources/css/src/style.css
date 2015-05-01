@@ -3,9 +3,9 @@ html, body
     height: 100%;
 }
 
-div.col-lg-7.input-group
+div.input-group
 {
-    margin: 0 auto;
+    flex-grow: 2;
 }
 
 .result_container
@@ -36,11 +36,126 @@ div.col-lg-7.input-group
 {
     font-size: 20px;
     font-weight: normal;
+    color: rgb(98,155,218);
 
-    margin-bottom: 0;
+    margin-bottom: 5px;
 }
 
 .review
 {
     padding-bottom: 20px;
+}
+
+.logo
+{
+    flex-grow: 1;
+    font-size: 2em;
+    font-weight: 500;
+}
+
+/* Copy from CodePen http://codepen.io/chrisdpratt/pen/IAymB/ */
+.bs-callout
+{
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+
+.bs-callout h4
+{
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.bs-callout p:last-child
+{
+    margin-bottom: 0;
+}
+
+.bs-callout code
+{
+    border-radius: 3px;
+}
+
+.bs-callout+.bs-callout
+{
+    margin-top: -5px;
+}
+
+.bs-callout-default
+{
+    background-color: #f2f2f2;
+    border-left-color: #777;
+}
+
+.bs-callout-default h4
+{
+    color: #777;
+}
+
+.bs-callout-primary
+{
+    background-color: #D9EDF7;
+    border-left-color: #428bca;
+}
+
+.bs-callout-primary h4
+{
+    color: #428bca;
+}
+
+.bs-callout-success
+{
+    background-color: #DFF0D8;
+    border-left-color: #5cb85c;
+}
+
+.bs-callout-success h4
+{
+    color: #5cb85c;
+}
+
+.bs-callout-danger
+{
+    background-color: #fcf2f2;
+    border-left-color: #d9534f;
+}
+
+.bs-callout-danger h4
+{
+    color: #d9534f;
+}
+
+.bs-callout-warning
+{
+    background-color: #fefbed;
+    border-left-color: #f0ad4e;
+}
+
+.bs-callout-warning h4
+{
+    color: #f0ad4e;
+}
+
+.bs-callout-info
+{
+    background-color: #f0f7fd;
+    border-left-color: #5bc0de;
+}
+
+.bs-callout-info h4
+{
+    color: #5bc0de;
+}
+
+#container
+{
+    padding: 10px 5px;
+    margin: 5px 10px;
+
+    display: flex;
+    flex-direction: row;
+    border-bottom: 3px solid rgb(223,235,248);
 }

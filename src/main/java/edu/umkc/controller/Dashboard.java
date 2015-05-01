@@ -6,7 +6,6 @@ import edu.umkc.api.FetchMovies;
 import edu.umkc.api.FetchReviews;
 import edu.umkc.api.models.MovieSearchResponse;
 import edu.umkc.api.models.Review;
-import edu.umkc.service.LDA;
 import edu.umkc.service.SentimentAnalysis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,14 +28,12 @@ public class Dashboard
     @Autowired
     private SentimentAnalysis sentimentAnalysis;
 
-    @Autowired
-    private LDA lda;
+//    @Autowired
+//    private SparkLDA lda;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String get()
     {
-        lda.topicDiscover();
-
         LOGGER.info("Get Dashboard page");
 
         return "dashboard";

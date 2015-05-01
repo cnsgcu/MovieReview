@@ -18,16 +18,24 @@
             var reviews = this.props.reviews.map(function(review) {
                 var sentiments = review["sentiments"].map(function(sentiment) {
                     var opinions = sentiment["opinions"].map(function(opinion) {
+                        var bgs = [
+                            "bs-callout bs-callout-danger",
+                            "bs-callout bs-callout-warning",
+                            "bs-callout bs-callout-default",
+                            "bs-callout bs-callout-success",
+                            "bs-callout bs-callout-primary"
+                        ];
+
                         return (
-                            <div>
-                                {opinion["score"]} - {opinion["sentence"]}
+                            <div className={bgs[opinion["score"] - 1]}>
+                                {opinion["sentence"]}
                             </div>
                         );
                     });
 
                     return (
                         <div>
-                            <div>{sentiment["topic"]}:</div>
+                            <h4>{sentiment["topic"]}</h4>
                             {opinions}
                         </div>
                     );
@@ -139,15 +147,27 @@
         render: function() {
             return (
                 <div>
-                    <div className="col-lg-7 input-group">
-                        <input ref="search" onKeyUp={this.handleKeyUp} className="form-control" placeholder="Search movie" type="text" />
+                    <div id="container">
+                        <div className="logo text-primary">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAhElEQVRoge3SwQmAMBQE0RRlsfZmMdpBiCI6O+yHuYqP7Bg92G37cRpyQuivNfu/QtCQ5JwQzbQKoUGSc0I00yqEBknOCdFMqxAaJDknZPp0P92jad35yFf3OoTQMiQ5J0QzrUJokOScEM20CqFBknNCNNMqhAZJzgnRTEsDSc4D6cHuAicWBtzYwlivAAAAAElFTkSuQmCC" width="50" height="50" />
+                            Movie Review Analysis
+                        </div>
+
+                        <div className="col-lg-5 input-group">
+                            <input ref="search"
+                                   onKeyUp={this.handleKeyUp}
+                                   className="form-control"
+                                   placeholder="Search movie"
+                                   type="text" />
 
                         <span className="input-group-btn">
                             <button className="btn btn-info">
                                 <span className="glyphicon glyphicon-search"></span>
                             </button>
                         </span>
+                        </div>
                     </div>
+
 
                     <MovieList data={this.state.movies} />
                 </div>
