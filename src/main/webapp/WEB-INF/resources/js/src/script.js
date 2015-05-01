@@ -14,7 +14,49 @@
     });
 
     var Review = React.createClass({
+        buildHeader: function(score) {
+            switch (score) {
+                case 0:
+                    return (
+                        <h4>
+                            <span className="glyphicon glyphicon-thumbs-down"></span>
+                            <span className="glyphicon glyphicon-thumbs-down"></span>
+                        </h4>
+                    );
+                case 1:
+                    return (
+                        <h4>
+                            <span className="glyphicon glyphicon-thumbs-down"></span>
+                        </h4>
+                    );
+                case 2:
+                    return (
+                        <h4>
+                            <span className="glyphicon glyphicon-thumbs-up"></span>
+                            <span className="glyphicon glyphicon-thumbs-down"></span>
+                        </h4>
+                    );
+                case 3:
+                    return (
+                        <h4>
+                            <span className="glyphicon glyphicon-thumbs-up"></span>
+                        </h4>
+                    );
+                case 4:
+                    return (
+                        <h4>
+                            <span className="glyphicon glyphicon-thumbs-up"></span>
+                            <span className="glyphicon glyphicon-thumbs-up"></span>
+                        </h4>
+                    );
+                default:
+                    return (<h4>Unknown</h4>);
+            }
+        },
+
         render: function () {
+            var self = this;
+
             var reviews = this.props.reviews.map(function(review) {
                 var sentiments = review["sentiments"].map(function(sentiment) {
                     var opinions = sentiment["opinions"].map(function(opinion) {
@@ -26,35 +68,9 @@
                             "bs-callout-primary"
                         ];
 
-                        var header;
-                        if (opinion["score"] === 0) {
-                            header = <h4>
-                                         <span className="glyphicon glyphicon-thumbs-down"></span>
-                                         <span className="glyphicon glyphicon-thumbs-down"></span>
-                                     </h4>;
-                        } else if (opinion["score"] === 1) {
-                            header = <h4>
-                                         <span className="glyphicon glyphicon-thumbs-down"></span>
-                                     </h4>;
-                        } else if (opinion["score"] === 2) {
-                            header = <h4>
-                                         <span className="glyphicon glyphicon-thumbs-up"></span>
-                                         <span className="glyphicon glyphicon-thumbs-down"></span>
-                                     </h4>;
-                        } else if (opinion["score"] === 3) {
-                            header = <h4>
-                                         <span className="glyphicon glyphicon-thumbs-up"></span>
-                                     </h4>;
-                        } else if (opinion["score"] === 4) {
-                            header = <h4>
-                                         <span className="glyphicon glyphicon-thumbs-up"></span>
-                                         <span className="glyphicon glyphicon-thumbs-up"></span>
-                                     </h4>;
-                        }
-
                         return (
                             <div className={"bs-callout " + bgs[opinion["score"]]}>
-                                {header}
+                                {self.buildHeader(opinion["score"])}
                                 {opinion["sentence"]}
                             </div>
                         );
