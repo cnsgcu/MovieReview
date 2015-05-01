@@ -50,7 +50,7 @@
                         </h4>
                     );
                 default:
-                    return (<h4>Unknown</h4>);
+                    return (<h4>Unexpected score: {score}</h4>);
             }
         },
 
