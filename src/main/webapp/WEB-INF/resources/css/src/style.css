@@ -150,6 +150,11 @@ div.input-group
     color: #5bc0de;
 }
 
+.bs-callout h4 span
+{
+    padding: 0 2px;
+}
+
 #container
 {
     padding: 10px 5px;

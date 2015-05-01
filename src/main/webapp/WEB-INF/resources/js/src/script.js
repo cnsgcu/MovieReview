@@ -19,15 +19,42 @@
                 var sentiments = review["sentiments"].map(function(sentiment) {
                     var opinions = sentiment["opinions"].map(function(opinion) {
                         var bgs = [
-                            "bs-callout bs-callout-danger",
-                            "bs-callout bs-callout-warning",
-                            "bs-callout bs-callout-default",
-                            "bs-callout bs-callout-success",
-                            "bs-callout bs-callout-primary"
+                            "bs-callout-danger",
+                            "bs-callout-warning",
+                            "bs-callout-default",
+                            "bs-callout-success",
+                            "bs-callout-primary"
                         ];
 
+                        var header;
+                        if (opinion["score"] === 1) {
+                            header = <h4>
+                                         <span className="glyphicon glyphicon-thumbs-down" ariaHidden="true"></span>
+                                         <span className="glyphicon glyphicon-thumbs-down" ariaHidden="true"></span>
+                                     </h4>;
+                        } else if (opinion["score"] === 2) {
+                            header = <h4>
+                                         <span className="glyphicon glyphicon-thumbs-down" ariaHidden="true"></span>
+                                     </h4>;
+                        } else if (opinion["score"] === 3) {
+                            header = <h4>
+                                         <span className="glyphicon glyphicon-thumbs-up" ariaHidden="true"></span>
+                                         <span className="glyphicon glyphicon-thumbs-down" ariaHidden="true"></span>
+                                     </h4>;
+                        } else if (opinion["score"] === 4) {
+                            header = <h4>
+                                         <span className="glyphicon glyphicon-thumbs-up" ariaHidden="true"></span>
+                                     </h4>;
+                        } else if (opinion["score"] === 5) {
+                            header = <h4>
+                                         <span className="glyphicon glyphicon-thumbs-up" ariaHidden="true"></span>
+                                         <span className="glyphicon glyphicon-thumbs-up" ariaHidden="true"></span>
+                                     </h4>;
+                        }
+
                         return (
-                            <div className={bgs[opinion["score"] - 1]}>
+                            <div className={"bs-callout " + bgs[opinion["score"] - 1]}>
+                                {header}
                                 {opinion["sentence"]}
                             </div>
                         );
