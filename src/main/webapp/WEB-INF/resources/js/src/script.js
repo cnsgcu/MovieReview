@@ -27,33 +27,33 @@
                         ];
 
                         var header;
-                        if (opinion["score"] === 1) {
+                        if (opinion["score"] === 0) {
                             header = <h4>
-                                         <span className="glyphicon glyphicon-thumbs-down" ariaHidden="true"></span>
-                                         <span className="glyphicon glyphicon-thumbs-down" ariaHidden="true"></span>
+                                         <span className="glyphicon glyphicon-thumbs-down"></span>
+                                         <span className="glyphicon glyphicon-thumbs-down"></span>
+                                     </h4>;
+                        } else if (opinion["score"] === 1) {
+                            header = <h4>
+                                         <span className="glyphicon glyphicon-thumbs-down"></span>
                                      </h4>;
                         } else if (opinion["score"] === 2) {
                             header = <h4>
-                                         <span className="glyphicon glyphicon-thumbs-down" ariaHidden="true"></span>
+                                         <span className="glyphicon glyphicon-thumbs-up"></span>
+                                         <span className="glyphicon glyphicon-thumbs-down"></span>
                                      </h4>;
                         } else if (opinion["score"] === 3) {
                             header = <h4>
-                                         <span className="glyphicon glyphicon-thumbs-up" ariaHidden="true"></span>
-                                         <span className="glyphicon glyphicon-thumbs-down" ariaHidden="true"></span>
+                                         <span className="glyphicon glyphicon-thumbs-up"></span>
                                      </h4>;
                         } else if (opinion["score"] === 4) {
                             header = <h4>
-                                         <span className="glyphicon glyphicon-thumbs-up" ariaHidden="true"></span>
-                                     </h4>;
-                        } else if (opinion["score"] === 5) {
-                            header = <h4>
-                                         <span className="glyphicon glyphicon-thumbs-up" ariaHidden="true"></span>
-                                         <span className="glyphicon glyphicon-thumbs-up" ariaHidden="true"></span>
+                                         <span className="glyphicon glyphicon-thumbs-up"></span>
+                                         <span className="glyphicon glyphicon-thumbs-up"></span>
                                      </h4>;
                         }
 
                         return (
-                            <div className={"bs-callout " + bgs[opinion["score"] - 1]}>
+                            <div className={"bs-callout " + bgs[opinion["score"]]}>
                                 {header}
                                 {opinion["sentence"]}
                             </div>
