@@ -7,6 +7,7 @@ import edu.umkc.api.FetchReviews;
 import edu.umkc.api.models.MovieSearchResponse;
 import edu.umkc.api.models.Review;
 import edu.umkc.service.SentimentAnalysis;
+import edu.umkc.service.SparkLDA;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +27,16 @@ public class Dashboard
     final static Gson gson = new GsonBuilder().create();
 
     @Autowired
-    private SentimentAnalysis sentimentAnalysis;
+    private SparkLDA lda;
 
-//    @Autowired
-//    private SparkLDA lda;
+    @Autowired
+    private SentimentAnalysis sentimentAnalysis;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String get()
     {
+        lda.guess("Hi");
+
         LOGGER.info("Get Dashboard page");
 
         return "dashboard";

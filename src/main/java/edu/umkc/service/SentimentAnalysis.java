@@ -30,9 +30,14 @@ public class SentimentAnalysis
     @Autowired
     private StanfordCoreNLP coreNLP;
 
-    final public Predicate<Set<CorefMention>> hasTopics = mentions -> !guessTopics(mentions).isEmpty();
-    final public Predicate<CorefMention> nonPronominal = mention -> mention.mentionType != MentionType.PRONOMINAL;
-    final public Comparator<CorefMention> byMentionSpanLen = (lhs, rhs) -> lhs.mentionSpan.length() - rhs.mentionSpan.length();
+    static final public Predicate<CorefMention> nonPronominal = mention -> mention.mentionType != MentionType.PRONOMINAL;
+    static final public Comparator<CorefMention> byMentionSpanLen = (lhs, rhs) -> lhs.mentionSpan.length() - rhs.mentionSpan.length();
+    static final public Function<Set<CorefMention>, List<CorefChain.CorefMention>> guessTopics =
+        mentions -> mentions.stream()
+                            .filter(nonPronominal)
+                            .sorted(byMentionSpanLen)
+                            .collect(Collectors.toList());
+    static final public Predicate<Set<CorefMention>> hasTopics = mentions -> !guessTopics.apply(mentions).isEmpty();
 
     public ReviewSentiment sentimentAnalyze(String message)
     {
@@ -46,7 +51,7 @@ public class SentimentAnalysis
         final List<Sentiment> sentiments = getMentions(graph).stream()
             .filter(hasTopics).map(mentions -> {
                 final Sentiment sentiment = new Sentiment();
-                sentiment.setTopic(guessTopics(mentions).get(0).mentionSpan);
+                sentiment.setTopic(guessTopics.apply(mentions).get(0).mentionSpan);
                 sentiment.setOpinions(mentions.stream().map(toOpinion).collect(Collectors.toSet()));
 
                 return sentiment;
@@ -67,13 +72,5 @@ public class SentimentAnalysis
                              .flatMap(Set::stream)
                              .collect(Collectors.toSet())
             ).collect(Collectors.toList());
-    }
-
-    private List<CorefChain.CorefMention> guessTopics(Set<CorefChain.CorefMention> mentions)
-    {
-        return mentions.stream()
-                       .filter(nonPronominal)
-                       .sorted(byMentionSpanLen)
-                       .collect(Collectors.toList());
     }
 }

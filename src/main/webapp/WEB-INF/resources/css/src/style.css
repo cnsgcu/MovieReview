@@ -53,6 +53,11 @@ div.input-group
     font-weight: 500;
 }
 
+.logo span
+{
+    padding-left: 10px;
+}
+
 /* Copy from CodePen http://codepen.io/chrisdpratt/pen/IAymB/ */
 .bs-callout
 {
