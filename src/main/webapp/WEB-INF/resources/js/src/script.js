@@ -203,11 +203,11 @@
                                    placeholder="Search movie"
                                    type="text" />
 
-                        <span className="input-group-btn">
-                            <button className="btn btn-info">
-                                <span className="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
+                            <span className="input-group-btn">
+                                <button className="btn btn-info">
+                                    <span className="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
                         </div>
                     </div>
 

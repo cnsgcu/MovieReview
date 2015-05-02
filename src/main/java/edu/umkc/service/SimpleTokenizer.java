@@ -7,10 +7,9 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import org.apache.spark.api.java.JavaSparkContext;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SimpleTokenizer implements Serializable
 {
@@ -18,9 +17,11 @@ public class SimpleTokenizer implements Serializable
 
     private Set<String> stopwords;
 
-    public SimpleTokenizer(JavaSparkContext sc, String filePath)
+    public SimpleTokenizer(JavaSparkContext jsc, String stopwordFile)
     {
-
+        stopwords = jsc.textFile(stopwordFile).collect().stream()
+                .flatMap(s -> Stream.of(s.split("\\s+")))
+                .collect(Collectors.toSet());
     }
 
     public List<String> getWords(String text)
@@ -30,9 +31,9 @@ public class SimpleTokenizer implements Serializable
 
         final StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
-        Annotation doc = new Annotation(text);
+        final Annotation doc = new Annotation(text);
         pipeline.annotate(doc);
-        List<CoreLabel> tokens = doc.get(CoreAnnotations.TokensAnnotation.class);
+        final List<CoreLabel> tokens = doc.get(CoreAnnotations.TokensAnnotation.class);
 
         return tokens.stream().map(CoreLabel::lemma)
                      .filter(word -> !stopwords.contains(word) && word.length() > minWordLength)
