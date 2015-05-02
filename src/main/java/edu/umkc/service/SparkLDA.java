@@ -73,7 +73,7 @@ public class SparkLDA
 
             final Iterator<Integer> ints = IntStream.iterate(0, i -> i + 1).iterator();
             final Map<String, Integer> vocab = wordCounts.collect().stream()
-                                                         .sorted((t1, t2) -> Long.compare(t1._2(), t2._2()))
+                                                         .sorted((t1, t2) -> -Long.compare(t1._2(), t2._2()))
                                                          .collect(Collectors.toMap(Tuple2::_1, t -> ints.next()));
 
             final JavaPairRDD<Long, Vector> corpus = tokenized.mapToPair(t -> {
