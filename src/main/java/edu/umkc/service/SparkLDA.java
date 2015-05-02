@@ -14,6 +14,8 @@ import org.apache.spark.mllib.linalg.Vectors;
 import org.slf4j.LoggerFactory;
 import scala.Tuple2;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -61,13 +63,12 @@ public class SparkLDA
             final JavaRDD<Tuple2<Long, List<String>>> tokenized = plotsRDD.zipWithIndex().map(t -> new Tuple2<>(t._2(), tokenizer.getWords(t._1())));
             tokenized.cache();
 
-            final JavaRDD<Tuple2<String, Long>> wordCounts = tokenized.flatMap(
-                    t -> t._2().stream()
-                               .collect(groupingBy(identity(), counting()))
-                               .entrySet().stream()
-                               .map(e -> new Tuple2<>(e.getKey(), e.getValue()))
-                               .collect(Collectors.toList())
-            );
+            final JavaPairRDD<String, Long> wordCounts = tokenized.flatMapToPair(
+                t -> t._2().stream().collect(groupingBy(identity(), counting()))
+                           .entrySet().stream()
+                           .map(e -> new Tuple2<>(e.getKey(), e.getValue()))
+                           .collect(Collectors.toList())
+            ).reduceByKey(Long::sum);
             wordCounts.cache();
 
             final Iterator<Integer> ints = IntStream.iterate(0, i -> i + 1).iterator();
@@ -94,7 +95,9 @@ public class SparkLDA
                                      .setDocConcentration(-1)
                                      .setTopicConcentration(-1);
 
+            LocalDateTime start = LocalDateTime.now();
             final LDAModel model = lda.run(corpus);
+            LOGGER.info("Execution time " + Duration.between(start, LocalDateTime.now()));
             Tuple2<int[], double[]>[] topicIndices = model.describeTopics(5);
 
             for (Integer i : topicIndices[0]._1()) {
