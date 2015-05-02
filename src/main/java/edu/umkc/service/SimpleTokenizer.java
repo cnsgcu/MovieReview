@@ -16,6 +16,7 @@ public class SimpleTokenizer implements Serializable
     private int minWordLength = 1;
 
     private Set<String> stopwords;
+    private StanfordCoreNLP coreNLP;
 
     public SimpleTokenizer(JavaSparkContext jsc, String stopwordFile)
     {
@@ -26,10 +27,7 @@ public class SimpleTokenizer implements Serializable
 
     public List<String> getWords(String text)
     {
-        final Properties props = new Properties();
-        props.setProperty("annotators", "tokenize, ssplit, pos, lemma");
-
-        final StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+        final StanfordCoreNLP pipeline = getCoreNLP();
 
         final Annotation doc = new Annotation(text);
         pipeline.annotate(doc);
@@ -38,5 +36,17 @@ public class SimpleTokenizer implements Serializable
         return tokens.stream().map(CoreLabel::lemma)
                      .filter(word -> !stopwords.contains(word) && word.length() > minWordLength)
                      .collect(Collectors.toList());
+    }
+
+    private StanfordCoreNLP getCoreNLP()
+    {
+        if (coreNLP == null) {
+            final Properties props = new Properties();
+            props.setProperty("annotators", "tokenize, ssplit, pos, lemma");
+
+            this.coreNLP = new StanfordCoreNLP(props);
+        }
+
+        return this.coreNLP;
     }
 }
