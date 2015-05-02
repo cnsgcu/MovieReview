@@ -1,7 +1,7 @@
 package edu.umkc.service;
 
 import cc.mallet.pipe.*;
-import cc.mallet.pipe.iterator.CsvIterator;
+import cc.mallet.pipe.iterator.StringArrayIterator;
 import cc.mallet.topics.ParallelTopicModel;
 import cc.mallet.topics.TopicInferencer;
 import cc.mallet.types.*;
@@ -20,20 +20,20 @@ public class MalletLDA
         // Pipes: lowercase, tokenize, remove stopwords, map to features
         pipeList.add( new CharSequenceLowercase() );
         pipeList.add( new CharSequence2TokenSequence(Pattern.compile("\\p{L}[\\p{L}\\p{P}]+\\p{L}")) );
-        pipeList.add( new TokenSequenceRemoveStopwords(new File("stoplists/en.txt"), "UTF-8", false, false, false) );
+        pipeList.add( new TokenSequenceRemoveStopwords(new File(Thread.currentThread().getContextClassLoader().getResource("lda/stopwords.txt").getPath()), "UTF-8", false, false, false) );
         pipeList.add( new TokenSequence2FeatureSequence() );
 
         InstanceList instances = new InstanceList (new SerialPipes(pipeList));
 
-        Reader fileReader = new InputStreamReader(new FileInputStream(new File(args[0])), "UTF-8");
-        instances.addThruPipe(new CsvIterator(fileReader, Pattern.compile("^(\\S*)[\\s,]*(\\S*)[\\s,]*(.*)$"),
-                3, 2, 1)); // data, label, name fields
+        instances.addThruPipe(
+            new StringArrayIterator(new String[]{"\"Kingsman: The Secret Service\" is a youth-quaking riff bursting with affection for vintage 007 action and urbanity, yet one that feels wholly organic in the way it goes about selling this appreciation to a younger crowd."})
+        );
 
         // Create a model with 100 topics, alpha_t = 0.01, beta_w = 0.01
         //  Note that the first parameter is passed as the sum over topics, while
         //  the second is the parameter for a single dimension of the Dirichlet prior.
-        int numTopics = 100;
-        ParallelTopicModel model = new ParallelTopicModel(numTopics, 1.0, 0.01);
+        int numTopics = 5;
+        ParallelTopicModel model = new ParallelTopicModel(numTopics, 1.0, 0.2);
 
         model.addInstances(instances);
 
@@ -43,7 +43,7 @@ public class MalletLDA
 
         // Run the model for 50 iterations and stop (this is for testing only,
         //  for real applications, use 1000 to 2000 iterations)
-        model.setNumIterations(50);
+        model.setNumIterations(500);
         model.estimate();
 
         // Show the words and topics in the first instance
@@ -100,5 +100,9 @@ public class MalletLDA
         TopicInferencer inferencer = model.getInferencer();
         double[] testProbabilities = inferencer.getSampledDistribution(testing.get(0), 10, 1, 5);
         System.out.println("0\t" + testProbabilities[0]);
+        System.out.println("1\t" + testProbabilities[1]);
+        System.out.println("2\t" + testProbabilities[2]);
+        System.out.println("3\t" + testProbabilities[3]);
+        System.out.println("4\t" + testProbabilities[4]);
     }
 }

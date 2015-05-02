@@ -86,7 +86,7 @@ public class SparkLDA
                 return new Tuple2<>(t._1(), sb);
             });
 
-            List<String> vocabArray = IntStream.range(0, vocab.size()).mapToObj(i -> "").collect(Collectors.toList());
+            final List<String> vocabArray = IntStream.range(0, vocab.size()).mapToObj(i -> "").collect(Collectors.toList());
             vocab.entrySet().forEach(e -> vocabArray.set(e.getValue(), e.getKey()));
 
             final LDA lda = new LDA().setK(5)
