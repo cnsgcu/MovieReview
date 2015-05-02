@@ -21,8 +21,8 @@ public class SimpleTokenizer implements Serializable
     public SimpleTokenizer(JavaSparkContext jsc, String stopwordFile)
     {
         stopwords = jsc.textFile(stopwordFile).collect().stream()
-                .flatMap(s -> Stream.of(s.split("\\s+")))
-                .collect(Collectors.toSet());
+                                              .flatMap(s -> Stream.of(s.split("\\s+")))
+                                              .collect(Collectors.toSet());
     }
 
     public List<String> getWords(String text)
@@ -31,6 +31,7 @@ public class SimpleTokenizer implements Serializable
 
         final Annotation doc = new Annotation(text);
         pipeline.annotate(doc);
+
         final List<CoreLabel> tokens = doc.get(CoreAnnotations.TokensAnnotation.class);
 
         return tokens.stream().map(CoreLabel::lemma)
