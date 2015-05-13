@@ -36,7 +36,7 @@ public class SparkLDA
     {
         final SparkLDA lda = new SparkLDA();
 
-        lda.guess("\"Kingsman: The Secret Service\" is a youth-quaking riff bursting with affection for vintage 007 action and urbanity, yet one that feels wholly organic in the way it goes about selling this appreciation to a younger crowd.");
+        lda.guess("The Lion King, complete with jaunty songs by Elton John and Tim Rice, is undeniably and fully worthy of its glorious Disney heritage. It is a gorgeous triumph -- one lion in which the studio can take justified pride.");
     }
 
     private SimpleTokenizer tokenizer;
@@ -113,8 +113,11 @@ public class SparkLDA
 
         Tuple2<int[], double[]>[] topicIndices = model.describeTopics(5);
 
-        for (Integer i : topicIndices[0]._1()) {
-            LOGGER.info(vocabArray.get(i));
+        for (int i = 0; i < topicIndices.length; i++) {
+            LOGGER.info("============ Topic " + (i+1) + " =============");
+            for (Integer j : topicIndices[i]._1()) {
+                LOGGER.info(vocabArray.get(j));
+            }
         }
 
         jsc.stop();
